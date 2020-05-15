@@ -1,0 +1,3 @@
+rootProject.name='LifeGame'
+include ':app'
+include ':game'
