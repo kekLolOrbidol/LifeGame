@@ -2,7 +2,7 @@ package xyz.do9core.lifegame
 
 import org.junit.Test
 
-import org.junit.Assert.*
+import xyz.do9core.lifegame.view.booleanMatrix
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -10,8 +10,12 @@ import org.junit.Assert.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun `matrix set is correct`() {
+        val m = booleanMatrix(1, 1, false)
+        m[0, 0] = true
+        assert(m[0, 0])
+
     }
 }
