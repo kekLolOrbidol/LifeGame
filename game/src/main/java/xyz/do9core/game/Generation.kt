@@ -1,10 +1,8 @@
 package xyz.do9core.game
 
-data class Generation(
-    val lives: Set<Position>,
-    val size: Size
-) {
-    fun evolve(): Generation {
+data class Generation(val lives: Set<Position>) {
+
+    internal fun evolve(size: Size): Generation {
         val next = mutableSetOf<Position>()
         for (x in 0 until size.width) {
             for (y in 0 until size.height) {
@@ -18,17 +16,6 @@ data class Generation(
                 }
             }
         }
-        return Generation(next, size)
-    }
-
-    override fun toString(): String {
-        return buildString {
-            for (y in 0 until size.height) {
-                for (x in 0 until size.width) {
-                    append(if (lives.contains(Position(x, y))) "x" else "o")
-                }
-                appendln()
-            }
-        }
+        return Generation(next)
     }
 }
