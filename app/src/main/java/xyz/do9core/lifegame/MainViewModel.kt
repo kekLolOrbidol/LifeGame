@@ -18,7 +18,7 @@ class MainViewModel : ViewModel() {
     }
 
     private val _indexedGeneration = MutableLiveData<IndexedValue<Generation>>()
-    val generationCount = Transformations.map(_indexedGeneration) { it.index }
+    val generationCount = Transformations.map(_indexedGeneration) { it.index.toString() }
     val dataMatrix = Transformations.map(_indexedGeneration) { indexedGeneration ->
         val generation = indexedGeneration.value
         BooleanMatrix(universe.width, universe.height).also { matrix ->
