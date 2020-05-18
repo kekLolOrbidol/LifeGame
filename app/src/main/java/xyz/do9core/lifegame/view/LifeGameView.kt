@@ -18,12 +18,13 @@ class LifeGameView @JvmOverloads constructor(
     // Data
     private var matrix = BooleanMatrix(1, 1)
 
-    fun setMatrix(newBooleanMatrix: BooleanMatrix) {
-        check(newBooleanMatrix.width >= 1 && newBooleanMatrix.height >= 1)
-        if (!(newBooleanMatrix sizeEquals matrix)) {
-            calculatePxSize(newBooleanMatrix, width, height)
+    fun setMatrix(newMatrix: BooleanMatrix?) {
+        val new = newMatrix ?: return
+        check(new.width >= 1 && new.height >= 1)
+        if (!(new sizeEquals matrix)) {
+            calculatePxSize(new, width, height)
         }
-        matrix = newBooleanMatrix
+        matrix = new
         calculatePixels()
         invalidate()
     }

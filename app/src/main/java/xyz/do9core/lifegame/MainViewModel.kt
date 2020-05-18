@@ -1,9 +1,6 @@
 package xyz.do9core.lifegame
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -12,17 +9,25 @@ import xyz.do9core.game.Generation
 import xyz.do9core.game.Universe
 import xyz.do9core.game.createUniverse
 import xyz.do9core.game.life.ring
+import xyz.do9core.lifegame.view.BooleanMatrix
 
 class MainViewModel : ViewModel() {
 
-    val universe: Universe = createUniverse(51, 51) {
+    private val universe: Universe = createUniverse(51, 51) {
         ring(8, 8)
     }
 
-    private val _generation = MutableLiveData<Generation>()
-    val generation: LiveData<Generation> = _generation
+    private val _indexedGeneration = MutableLiveData<IndexedValue<Generation>>()
+    val generationCount = Transformations.map(_indexedGeneration) { it.index }
+    val dataMatrix = Transformations.map(_indexedGeneration) { indexedGeneration ->
+        val generation = indexedGeneration.value
+        BooleanMatrix(universe.width, universe.height).also { matrix ->
+            generation.lives.forEach { matrix[it.x, it.y] = true }
+        }
+    }
 
-    val isActive get() = evolving?.isActive ?: false
+    private val _isActive = MutableLiveData(false)
+    val isActive: LiveData<Boolean> = _isActive
 
     private var evolving: Job? = null
     fun bigBang() {
@@ -31,12 +36,15 @@ class MainViewModel : ViewModel() {
             .buffer()
             .flowOn(Dispatchers.Default)
             .onEach { delay(500) }
-            .onEach { gen -> _generation.postValue(gen) }
+            .withIndex()
+            .onEach { gen -> _indexedGeneration.postValue(gen) }
             .launchIn(viewModelScope)
+        _isActive.postValue(true)
     }
 
     fun heatDeath() {
         evolving?.cancel()
         evolving = null
+        _isActive.postValue(false)
     }
 }
