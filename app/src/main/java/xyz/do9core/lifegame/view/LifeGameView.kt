@@ -7,6 +7,8 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.withStyledAttributes
+import xyz.do9core.lifegame.R
 import kotlin.math.min
 
 class LifeGameView @JvmOverloads constructor(
@@ -32,9 +34,26 @@ class LifeGameView @JvmOverloads constructor(
     // View
     private val paint = Paint()
     private val pixels = mutableMapOf<RectF, Int>()
-    private var pxSize = 0
-    private var liveColor = Color.GREEN
-    private var deadColor = Color.BLACK
+    private var pxSize = 0f
+
+    var liveColor: Int = 0
+        set(value) {
+            field = value
+            invalidate()
+        }
+
+    var deadColor: Int = 0
+        set(value) {
+            field = value
+            invalidate()
+        }
+
+    init {
+        context.withStyledAttributes(attrs, R.styleable.LifeGameView) {
+            liveColor = getColor(R.styleable.LifeGameView_liveColor, Color.WHITE)
+            deadColor = getColor(R.styleable.LifeGameView_deadColor, Color.BLACK)
+        }
+    }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         calculatePxSize(matrix, w, h)
@@ -51,7 +70,9 @@ class LifeGameView @JvmOverloads constructor(
     }
 
     private fun calculatePxSize(matrix: BooleanMatrix, w: Int, h: Int) {
-        pxSize = min(w / matrix.width, h / matrix.height)
+        val widthF = w.toFloat()
+        val heightF = h.toFloat()
+        pxSize = min(widthF / matrix.width, heightF / matrix.height)
     }
 
     private fun calculatePixels() {
@@ -60,9 +81,9 @@ class LifeGameView @JvmOverloads constructor(
         var left: Float
         var pixel: RectF
         for (x in matrix.widthIndices) {
-            left = pxSize * x.toFloat()
+            left = pxSize * x
             for (y in matrix.heightIndices) {
-                top = pxSize * y.toFloat()
+                top = pxSize * y
                 pixel = RectF(left, top, left + pxSize, top + pxSize)
                 pixels[pixel] = if (matrix[x, y]) liveColor else deadColor
             }
