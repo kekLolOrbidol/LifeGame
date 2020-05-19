@@ -9,10 +9,9 @@ data class Generation(val lives: Set<Position>) {
                 val p = Position(x, y)
                 val isLive = lives.contains(p)
                 when (p.neighbours().intersect(lives).size) {
-                    in 0..1 -> Unit
-                    in 2..2 -> if (isLive) next.add(p)
-                    in 3..3 -> next.add(p)
-                    in 3..8 -> if (!isLive) next.add(p)
+                    2 -> if (isLive) next.add(p)
+                    3 -> next.add(p)
+                    in 4..8 -> if (!isLive) next.add(p)
                 }
             }
         }
