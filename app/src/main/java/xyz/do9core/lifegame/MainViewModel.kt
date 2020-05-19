@@ -2,6 +2,7 @@ package xyz.do9core.lifegame
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -25,6 +26,7 @@ class MainViewModel : ViewModel() {
 
     private var evolving: Job? = null
 
+    @ExperimentalCoroutinesApi
     fun bigBang() {
         val universe = createUniverse(41, 41, time = 10) {
             randPoints(0 to 0, 40 to 40, density = 0.1)
@@ -32,11 +34,11 @@ class MainViewModel : ViewModel() {
         _universe.postValue(universe)
         evolving = universe.asFlow()
             .buffer()
-            .flowOn(Dispatchers.Default)
             .onEach { delay(500) }
             .withIndex()
-            .onEach { gen -> _indexedGeneration.postValue(gen) }
+            .flowOn(Dispatchers.Default)
             .onStart { _isActive.value = true }
+            .onEach { _indexedGeneration.value = it }
             .onCompletion { _isActive.value = false }
             .launchIn(viewModelScope)
     }
