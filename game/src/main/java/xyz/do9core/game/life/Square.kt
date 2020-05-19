@@ -2,7 +2,7 @@ package xyz.do9core.game.life
 
 import xyz.do9core.game.Position
 
-class Square(x: Int, y: Int) : TopLeft(x, y) {
+class Square(x: Int, y: Int) : TopLeftLife(x, y) {
 
     override fun positions(): Set<Position> {
         val (x, y) = topLeft

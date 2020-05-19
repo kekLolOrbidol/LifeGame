@@ -6,7 +6,7 @@ abstract class Life {
     abstract fun positions(): Set<Position>
 }
 
-abstract class TopLeft(val topLeft: Position): Life() {
+abstract class TopLeftLife(val topLeft: Position): Life() {
     constructor(x: Int, y: Int): this(Position(x, y))
 }
 
