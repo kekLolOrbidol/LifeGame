@@ -2,23 +2,32 @@ package xyz.do9core.game
 
 import xyz.do9core.game.life.LifePool
 
+private const val INFINITY_TIME = "Inf."
+
 data class Universe(
     val width: Int,
     val height: Int,
     private val initialState: Generation,
-    private var maxLife: Int = -1
+    private val maxLife: Any = INFINITY_TIME
 ) : Iterable<Generation> {
 
     private val size = Size(width, height)
 
     private inner class UniverseStateIterator : Iterator<Generation> {
         var current = initialState
+        var life: Int? = maxLife as? Int
+
         override fun hasNext(): Boolean {
-            return if (maxLife < 0) true else {
-                --maxLife > 0
-            }
+            val l = life ?: return true
+            life = l - 1
+            return l > 0
         }
-        override fun next() = current.also { current = current.evolve(size) }
+
+        override fun next(): Generation {
+            val temp = current
+            current = current.evolve(size)
+            return temp
+        }
     }
 
     override fun iterator(): Iterator<Generation> = UniverseStateIterator()
@@ -27,10 +36,10 @@ data class Universe(
 fun createUniverse(
     width: Int,
     height: Int,
-    time: Int = Int.MIN_VALUE,
+    time: Int? = null,
     lives: LifePool.() -> Unit
 ): Universe {
     val points = LifePool().apply(lives).points()
     val initGen = Generation(points)
-    return Universe(width, height, initGen, time)
+    return Universe(width, height, initGen, time ?: INFINITY_TIME)
 }

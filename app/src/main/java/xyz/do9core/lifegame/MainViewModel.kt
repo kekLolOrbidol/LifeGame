@@ -9,14 +9,12 @@ import xyz.do9core.game.Generation
 import xyz.do9core.game.Universe
 import xyz.do9core.game.createUniverse
 import xyz.do9core.game.life.randPoints
-import xyz.do9core.game.life.ring
 import xyz.do9core.lifegame.view.BooleanMatrix
 
 class MainViewModel : ViewModel() {
 
-    private val universe: Universe = createUniverse(51, 51) {
-        ring(23, 23)
-        randPoints(0 to 0, 50 to 50, density = 0.05)
+    private val universe: Universe = createUniverse(51, 41, time = 20) {
+        randPoints(0 to 0, 50 to 40, density = 0.1)
     }
 
     private val _indexedGeneration = MutableLiveData<IndexedValue<Generation>>()
@@ -40,6 +38,7 @@ class MainViewModel : ViewModel() {
             .onEach { delay(500) }
             .withIndex()
             .onEach { gen -> _indexedGeneration.postValue(gen) }
+            .onCompletion { _isActive.postValue(false) }
             .launchIn(viewModelScope)
         _isActive.postValue(true)
     }
