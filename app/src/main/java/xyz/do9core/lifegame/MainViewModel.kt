@@ -14,12 +14,12 @@ import xyz.do9core.game.life.randPoints
 class MainViewModel : ViewModel() {
 
     private val _universe = MutableLiveData<Universe>()
-    val width = Transformations.map(_universe) { it.width }
-    val height = Transformations.map(_universe) { it.height }
+    val width = _universe.map { it.width }.distinctUntilChanged()
+    val height = _universe.map { it.height }.distinctUntilChanged()
 
     private val _indexedGeneration = MutableLiveData<IndexedValue<Generation>>()
-    val generationCount = Transformations.map(_indexedGeneration) { it.index.inc().toString() }
-    val liveCells = Transformations.map(_indexedGeneration) { it.value.lives }
+    val generationCount = _indexedGeneration.map { it.index.inc().toString() }
+    val liveCells = _indexedGeneration.map { it.value.lives }
 
     private val _isActive = MutableLiveData(false)
     val isActive: LiveData<Boolean> = _isActive
