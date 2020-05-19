@@ -8,13 +8,15 @@ import xyz.do9core.lifegame.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
+        DataBindingUtil.setContentView<ActivityMainBinding>(
+            this, R.layout.activity_main
+        ).also { binding ->
+            binding.lifecycleOwner = this
+            binding.viewModel = viewModel
+        }
     }
 }
