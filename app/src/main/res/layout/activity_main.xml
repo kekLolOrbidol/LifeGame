@@ -17,6 +17,7 @@
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@android:color/black"
             app:matrix="@{viewModel.dataMatrix}"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintTop_toTopOf="parent" />
