@@ -22,7 +22,7 @@ class LifeGameView @JvmOverloads constructor(
 
     fun setMatrix(newMatrix: BooleanMatrix?) {
         val new = newMatrix ?: return
-        check(new.width >= 1 && new.height >= 1)
+        check(new.columnCount >= 1 && new.rowCount >= 1)
         if (!(new sizeEquals matrix)) {
             calculatePxSize(new, width, height)
         }
@@ -33,25 +33,19 @@ class LifeGameView @JvmOverloads constructor(
 
     // View
     private val paint = Paint()
-    private val pixels = mutableMapOf<RectF, Int>()
+    private val pixels = mutableListOf<RectF>()
     private var pxSize = 0f
 
     var liveColor: Int = 0
         set(value) {
             field = value
-            invalidate()
-        }
-
-    var deadColor: Int = 0
-        set(value) {
-            field = value
+            paint.color = value
             invalidate()
         }
 
     init {
         context.withStyledAttributes(attrs, R.styleable.LifeGameView) {
-            liveColor = getColor(R.styleable.LifeGameView_liveColor, Color.WHITE)
-            deadColor = getColor(R.styleable.LifeGameView_deadColor, Color.BLACK)
+            liveColor = getColor(R.styleable.LifeGameView_liveColor, Color.GREEN)
         }
     }
 
@@ -63,29 +57,27 @@ class LifeGameView @JvmOverloads constructor(
         if (canvas == null) {
             return
         }
-        for (entry in pixels) {
-            paint.color = entry.value
-            canvas.drawRect(entry.key, paint)
-        }
+        val drawRect = { rect: RectF -> canvas.drawRect(rect, paint) }
+        pixels.forEach(drawRect)
     }
 
     private fun calculatePxSize(matrix: BooleanMatrix, w: Int, h: Int) {
         val widthF = w.toFloat()
         val heightF = h.toFloat()
-        pxSize = min(widthF / matrix.width, heightF / matrix.height)
+        pxSize = min(widthF / matrix.columnCount, heightF / matrix.rowCount)
     }
 
     private fun calculatePixels() {
         pixels.clear()
         var top: Float
         var left: Float
-        var pixel: RectF
-        for (x in matrix.widthIndices) {
+        for (x in matrix.columnIndices) {
             left = pxSize * x
-            for (y in matrix.heightIndices) {
-                top = pxSize * y
-                pixel = RectF(left, top, left + pxSize, top + pxSize)
-                pixels[pixel] = if (matrix[x, y]) liveColor else deadColor
+            for (y in matrix.rowIndices) {
+                if (matrix[x, y]) {
+                    top = pxSize * y
+                    pixels.add(RectF(left, top, left + pxSize, top + pxSize))
+                }
             }
         }
     }
