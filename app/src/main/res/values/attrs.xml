@@ -2,6 +2,5 @@
 <resources>
     <declare-styleable name="LifeGameView">
         <attr name="liveColor" format="color" />
-        <attr name="deadColor" format="color" />
     </declare-styleable>
 </resources>
