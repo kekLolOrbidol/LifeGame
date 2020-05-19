@@ -11,8 +11,6 @@ data class Universe(
     private val maxLife: Any = INFINITY_TIME
 ) : Iterable<Generation> {
 
-    private val size = Size(width, height)
-
     private inner class UniverseStateIterator : Iterator<Generation> {
         var current = initialState
         var life: Int? = maxLife as? Int
@@ -25,7 +23,7 @@ data class Universe(
 
         override fun next(): Generation {
             val temp = current
-            current = current.evolve(size)
+            current = current.evolve(width, height)
             return temp
         }
     }
