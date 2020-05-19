@@ -1,21 +1,21 @@
 package xyz.do9core.game.life
 
-import xyz.do9core.game.Position
+import xyz.do9core.game.Point
 
-data class Point(val position: Position) : Life() {
+data class Pixel(val position: Point) : Life() {
 
-    constructor(x: Int, y: Int) : this(Position(x, y))
+    constructor(x: Int, y: Int) : this(Point(x to y))
 
-    override fun positions(): Set<Position> {
+    override fun positions(): Set<Point> {
         return setOf(position)
     }
 }
 
-fun LifePool.point(x: Int, y: Int) = newLife { Point(x, y) }
+fun LifePool.point(x: Int, y: Int) = newLife { Pixel(x, y) }
 
 fun LifePool.points(vararg positions: Pair<Int, Int>) {
     positions.forEach {
-        newLife { Point(Position(it.first, it.second)) }
+        newLife { Pixel(Point(it)) }
     }
 }
 
@@ -28,12 +28,12 @@ fun LifePool.randPoints(
     val xRange = topLeft.first until bottomRight.first
     val yRange = topLeft.second until bottomRight.second
     val count = (xRange.count() * yRange.count() * density).toInt()
-    val points = mutableSetOf<Position>()
+    val points = mutableSetOf<Point>()
+    var p: Point
     repeat(count) {
-        var p: Position
         do {
-            p = Position(xRange.random(), yRange.random())
+            p = Point(xRange.random() to yRange.random())
         } while (p in points)
-        newLife { Point(p) }
+        newLife { Pixel(p) }
     }
 }

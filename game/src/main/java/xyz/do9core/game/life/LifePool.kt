@@ -1,6 +1,6 @@
 package xyz.do9core.game.life
 
-import xyz.do9core.game.Position
+import xyz.do9core.game.Point
 
 class LifePool internal constructor() {
 
@@ -10,7 +10,7 @@ class LifePool internal constructor() {
         lives.add(life())
     }
 
-    internal fun points(): Set<Position> {
+    internal fun points(): Set<Point> {
         return lives.flatMap { it.positions() }.toSet()
     }
 }

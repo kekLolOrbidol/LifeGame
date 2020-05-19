@@ -1,20 +1,20 @@
 package xyz.do9core.game.life
 
-import xyz.do9core.game.Position
+import xyz.do9core.game.Point
 
 class Square(x: Int, y: Int) : TopLeftLife(x, y) {
 
-    override fun positions(): Set<Position> {
-        val (x, y) = topLeft
+    override fun positions(): Set<Point> {
+        val (x, y) = topLeft.coordinate
         return setOf(
-            Position(x, y),
-            Position(x + 1, y),
-            Position(x + 2, y),
-            Position(x, y + 1),
-            Position(x, y + 2),
-            Position(x + 2, y + 1),
-            Position(x + 2, y + 2),
-            Position(x + 1, y + 2)
+            Point(x to y),
+            Point(x + 1 to y),
+            Point(x + 2 to y),
+            Point(x to y + 1),
+            Point(x to y + 2),
+            Point(x + 2 to y + 1),
+            Point(x + 2 to y + 2),
+            Point(x + 1 to y + 2)
         )
     }
 }

@@ -4,7 +4,7 @@ import xyz.do9core.game.life.LifePool
 
 private const val INFINITY_TIME = "Inf."
 
-data class Universe(
+data class Universe internal constructor(
     val width: Int,
     val height: Int,
     private val initialState: Generation,

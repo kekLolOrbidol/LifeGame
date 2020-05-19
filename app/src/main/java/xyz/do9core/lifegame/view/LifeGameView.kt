@@ -8,7 +8,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.withStyledAttributes
-import xyz.do9core.game.Position
+import xyz.do9core.game.Point
 import xyz.do9core.lifegame.R
 import kotlin.math.min
 
@@ -19,7 +19,7 @@ class LifeGameView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     // Data
-    fun setLives(lives: Set<Position>?) {
+    fun setLives(lives: Set<Point>?) {
         lives?.let {
             pixels.clear()
             var top: Float

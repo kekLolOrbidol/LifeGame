@@ -1,12 +1,12 @@
 package xyz.do9core.game
 
-data class Generation(val lives: Set<Position>) {
+data class Generation(val lives: Set<Point>) {
 
     internal fun evolve(width: Int, height: Int): Generation {
-        val next = mutableSetOf<Position>()
+        val next = mutableSetOf<Point>()
         for (x in 0 until width) {
             for (y in 0 until height) {
-                val p = Position(x, y)
+                val p = Point(x to y)
                 val isLive = lives.contains(p)
                 when (p.neighbours().intersect(lives).size) {
                     2 -> if (isLive) next.add(p)
