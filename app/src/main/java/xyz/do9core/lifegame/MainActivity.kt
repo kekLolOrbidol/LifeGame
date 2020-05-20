@@ -1,8 +1,7 @@
 package xyz.do9core.lifegame
 
-import android.Manifest
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,8 +17,8 @@ import xyz.do9core.lifegame.util.CoroutineLauncher
 class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
-    private val requestPermission =
-        CoroutineLauncher(activityResultRegistry)
+    private val permission = ActivityResultContracts.RequestPermission()
+    private val requestLauncher = CoroutineLauncher(activityResultRegistry)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,19 +30,16 @@ class MainActivity : AppCompatActivity() {
             binding.snapshotButton.setOnClickListener {
                 val viewBitmap = binding.container.snapshot()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    viewModel.savePNG(viewBitmap)
+                    viewModel.saveBitmapAsPNG(viewBitmap)
                     return@setOnClickListener
                 }
-                if (hasPermission) viewModel.savePNG(viewBitmap) else {
+                if (hasPermission) viewModel.saveBitmapAsPNG(viewBitmap) else {
                     lifecycleScope.launch {
-                        val success = requestPermission.launch(
-                            contract = ActivityResultContracts.RequestPermission(),
-                            input = Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
+                        val success = requestLauncher.launch(permission, WRITE_EXTERNAL_STORAGE)
                         if (success) {
-                            viewModel.savePNG(viewBitmap)
+                            viewModel.saveBitmapAsPNG(viewBitmap)
                         } else {
-                            viewModel.snackText("Snapshot need your permission to save.")
+                            viewModel.snackText(getString(R.string.msg_need_permission))
                         }
                     }
                 }
@@ -60,8 +56,9 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private val hasPermission
-        get() =
-            checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                    PackageManager.PERMISSION_GRANTED
+    private val hasPermission: Boolean get() {
+        val fastPath = permission.getSynchronousResult(this, WRITE_EXTERNAL_STORAGE)
+            ?: return false
+        return fastPath.value
+    }
 }

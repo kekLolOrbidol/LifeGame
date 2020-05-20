@@ -8,4 +8,5 @@
     <string name="btn_snapshot">Take Snapshot</string>
 
     <string name="msg_save_snapshot_failed">Failed to save snapshot.</string>
+    <string name="msg_need_permission">Snapshot need your permission to be saved.</string>
 </resources>

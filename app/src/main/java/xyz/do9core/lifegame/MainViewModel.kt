@@ -63,7 +63,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _snackEvent.set(SnackbarData(text))
     }
 
-    fun savePNG(bitmap: Bitmap) {
+    fun saveBitmapAsPNG(bitmap: Bitmap) {
         fun getName() = "lifegame-snapshot-${System.currentTimeMillis()}"
         val app = getApplication<App>()
         val resolver = app.contentResolver
