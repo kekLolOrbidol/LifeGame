@@ -4,4 +4,8 @@
     <string name="btn_start">Start</string>
     <string name="btn_restart">Restart</string>
     <string name="btn_stop">Stop</string>
+
+    <string name="btn_snapshot">Take Snapshot</string>
+
+    <string name="msg_save_snapshot_failed">Failed to save snapshot.</string>
 </resources>

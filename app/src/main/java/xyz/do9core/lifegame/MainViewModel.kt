@@ -1,17 +1,22 @@
 package xyz.do9core.lifegame
 
+import android.app.Application
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import androidx.core.content.contentValuesOf
 import androidx.lifecycle.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import xyz.do9core.game.Generation
 import xyz.do9core.game.Universe
 import xyz.do9core.game.createUniverse
 import xyz.do9core.game.life.randPoints
+import xyz.do9core.lifegame.util.*
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _universe = MutableLiveData<Universe>()
     val width = _universe.map { it.width }.distinctUntilChanged()
@@ -23,6 +28,12 @@ class MainViewModel : ViewModel() {
 
     private val _isActive = MutableLiveData(false)
     val isActive: LiveData<Boolean> = _isActive
+
+    private val _snackEvent = MutableLiveData<SnackbarEvent>()
+    val snackEvent: LiveData<SnackbarEvent> = _snackEvent
+
+    private val _savedImage = MutableLiveData<Event<Uri>>()
+    val savedImage: LiveData<Event<Uri>> = _savedImage
 
     private var evolving: Job? = null
 
@@ -46,5 +57,38 @@ class MainViewModel : ViewModel() {
     fun heatDeath() {
         evolving?.cancel()
         evolving = null
+    }
+
+    fun snackText(text: CharSequence) {
+        _snackEvent.set(SnackbarData(text))
+    }
+
+    fun savePNG(bitmap: Bitmap) {
+        fun getName() = "lifegame-snapshot-${System.currentTimeMillis()}"
+        val app = getApplication<App>()
+        val resolver = app.contentResolver
+        // Keep the task run beyond viewModelScope, we need the image to be saved.
+        app.coroutineScope.launch(Dispatchers.IO) {
+            val contentValues = contentValuesOf(
+                MediaStore.MediaColumns.DISPLAY_NAME to getName(),
+                MediaStore.MediaColumns.MIME_TYPE to "image/png"
+            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                contentValues.put(
+                    MediaStore.MediaColumns.RELATIVE_PATH,
+                    "${Environment.DIRECTORY_PICTURES}/LifeGame"
+                )
+            }
+            val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+            val snack = if (uri == null) {
+                SnackbarData(app.getString(R.string.msg_save_snapshot_failed))
+            } else {
+                resolver.openOutputStream(uri).use {
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                }
+                SnackbarData("Snapshot saved.", "Open") { _savedImage.post(uri) }
+            }
+            _snackEvent.post(snack)
+        }
     }
 }

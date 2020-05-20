@@ -1,13 +1,11 @@
 package xyz.do9core.lifegame.view
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.withStyledAttributes
+import androidx.core.view.drawToBitmap
 import xyz.do9core.game.Point
 import xyz.do9core.lifegame.R
 import kotlin.math.min
@@ -84,4 +82,6 @@ class LifeGameView @JvmOverloads constructor(
         val heightF = h.toFloat()
         pxSize = min(widthF / columns, heightF / rows)
     }
+
+    fun snapshot(): Bitmap = drawToBitmap(Bitmap.Config.ARGB_8888)
 }
