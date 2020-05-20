@@ -23,55 +23,49 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.generationCount}"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_margin="8dp"
+            tools:text="13"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/container"/>
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/control_panel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:layout_constraintStart_toEndOf="@id/container"
             app:layout_constraintEnd_toEndOf="parent"
             app:snackbar="@{viewModel.snackEvent}">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="bottom"
                 app:layout_dodgeInsetEdges="bottom">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{viewModel.generationCount}"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    tools:text="13"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/control_panel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <LinearLayout
-                    android:id="@+id/control_panel"
+                <Button
+                    android:id="@+id/snapshot_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    android:text="@string/btn_snapshot" />
 
-                    <Button
-                        android:id="@+id/snapshot_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/btn_snapshot" />
-
-                    <Button
-                        android:id="@+id/run_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:text="@string/btn_start"
-                        android:text="@{viewModel.isActive ? @string/btn_stop : @string/btn_start}"
-                        android:onClick="@{() -> viewModel.isActive ? viewModel.heatDeath() : viewModel.bigBang()}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/container"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <Button
+                    android:id="@+id/run_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/btn_start"
+                    android:text="@{viewModel.isActive ? @string/btn_stop : @string/btn_start}"
+                    android:onClick="@{() -> viewModel.isActive ? viewModel.heatDeath() : viewModel.bigBang()}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/container"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </LinearLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

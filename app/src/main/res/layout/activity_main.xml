@@ -24,52 +24,47 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:text="@{viewModel.generationCount}"
+            tools:text="12"
+            app:layout_constraintTop_toBottomOf="@id/container"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="8dp"/>
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/control_panel"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:snackbar="@{viewModel.snackEvent}"
             app:layout_constraintTop_toBottomOf="@id/container"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_gravity="bottom"
                 app:layout_dodgeInsetEdges="bottom">
 
-                <TextView
-                    android:id="@+id/gen_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:text="@{viewModel.generationCount}"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/control_panel"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-                <LinearLayout
-                    android:id="@+id/control_panel"
+                <Button
+                    android:id="@+id/snapshot_button"
+                    android:text="@string/btn_snapshot"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent">
+                    android:layout_height="wrap_content" />
 
-                    <Button
-                        android:id="@+id/snapshot_button"
-                        android:text="@string/btn_snapshot"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <Button
-                        android:id="@+id/run_button"
-                        tools:text="@string/btn_start"
-                        android:text="@{viewModel.isActive ? @string/btn_stop : @string/btn_start}"
-                        android:onClick="@{() -> viewModel.isActive ? viewModel.heatDeath() : viewModel.bigBang()}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <Button
+                    android:id="@+id/run_button"
+                    tools:text="@string/btn_start"
+                    android:text="@{viewModel.isActive ? @string/btn_stop : @string/btn_start}"
+                    android:onClick="@{() -> viewModel.isActive ? viewModel.heatDeath() : viewModel.bigBang()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -39,7 +39,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     @ExperimentalCoroutinesApi
     fun bigBang() {
-        val universe = createUniverse(41, 41, time = 10) {
+        val universe = createUniverse(41, 41) {
             randPoints(0 to 0, 40 to 40, density = 0.1)
         }
         _universe.postValue(universe)
