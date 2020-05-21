@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LifeGame</string>
+
+    <string name="btn_start">开始</string>
+    <string name="btn_restart">重启</string>
+    <string name="btn_stop">终止</string>
+
+    <string name="btn_snapshot">截图</string>
+
+    <string name="msg_save_snapshot_failed">保存截图失败</string>
+    <string name="msg_need_permission">Android 9及以下需要写入外部存储权限才可以保存截图</string>
+</resources>

@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package xyz.do9core.lifegame.util
 
 import androidx.lifecycle.MutableLiveData
@@ -14,10 +16,10 @@ data class Event<out T : Any>(private val data: T) {
     fun peekData() = data
 }
 
-fun <T : Any> MutableLiveData<Event<T>>.post(data: T) = this.postValue(
-    Event(data)
-)
+inline fun <T : Any> MutableLiveData<Event<T>>.post(data: T) {
+    this.postValue(Event(data))
+}
 
-fun <T : Any> MutableLiveData<Event<T>>.set(data: T) = this.setValue(
-    Event(data)
-)
+inline fun <T : Any> MutableLiveData<Event<T>>.set(data: T) {
+    this.value = Event(data)
+}
