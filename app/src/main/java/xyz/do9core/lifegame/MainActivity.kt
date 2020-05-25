@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import xyz.do9core.lifegame.databinding.ActivityMainBinding
 import xyz.do9core.lifegame.util.CoroutineLauncher
@@ -33,15 +34,20 @@ class MainActivity : AppCompatActivity() {
                     viewModel.saveBitmapAsPNG(viewBitmap)
                     return@setOnClickListener
                 }
-                if (hasPermission) viewModel.saveBitmapAsPNG(viewBitmap) else {
-                    lifecycleScope.launch {
-                        val success = requestLauncher.launch(permission, WRITE_EXTERNAL_STORAGE)
-                        if (success) {
-                            viewModel.saveBitmapAsPNG(viewBitmap)
-                        } else {
-                            viewModel.snackText(getString(R.string.msg_need_permission))
-                        }
+                if (hasPermission) {
+                    viewModel.saveBitmapAsPNG(viewBitmap)
+                    return@setOnClickListener
+                }
+                fun checkPermissionResult(success: Boolean) {
+                    if (success) {
+                        viewModel.saveBitmapAsPNG(viewBitmap)
+                    } else {
+                        viewModel.snackText(getString(R.string.msg_need_permission))
                     }
+                }
+                lifecycleScope.launch(Dispatchers.Main) {
+                    val result = requestLauncher.launch(permission, WRITE_EXTERNAL_STORAGE)
+                    checkPermissionResult(result)
                 }
             }
         }

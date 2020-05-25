@@ -6,10 +6,10 @@ import androidx.core.app.ActivityOptionsCompat
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-class CoroutineLauncher(private val activityResultRegistry: ActivityResultRegistry) {
+class CoroutineLauncher(private val registry: ActivityResultRegistry) {
 
     companion object {
-        const val TAG = "SuspendLauncher"
+        private const val TAG = "xyz.do9core.SuspendLauncher"
     }
 
     suspend fun <I, O> launch(
@@ -17,8 +17,9 @@ class CoroutineLauncher(private val activityResultRegistry: ActivityResultRegist
         input: I,
         options: ActivityOptionsCompat? = null
     ): O = suspendCancellableCoroutine { cont ->
-        val launcher = activityResultRegistry.register(TAG, contract) { result ->
+        val launcher = registry.register(TAG, contract) { result ->
             cont.resume(result)
+            cont.cancel()
         }
         cont.invokeOnCancellation { launcher.unregister() }
         launcher.launch(input, options)
