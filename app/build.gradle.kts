@@ -50,7 +50,6 @@ dependencies {
         include("*.jar")
     }
     implementation(fileTree)
-
     implementation(project(":game"))
 
     implementation(Dependencies.Kotlin.StandardLibrary)
