@@ -19,13 +19,19 @@ class LifeGameView @JvmOverloads constructor(
     // Data
     fun setLives(lives: Set<Point>?) {
         lives?.let {
-            pixels.clear()
+            pixels.scaleToSize(lives.size) { RectF() }
+            livePxCount = lives.size
             var top: Float
             var left: Float
-            for (cell in lives) {
+            lives.forEachIndexed { i, cell ->
                 left = pxSize * cell.x
                 top = pxSize * cell.y
-                pixels.add(RectF(left, top, left + pxSize, top + pxSize))
+                pixels[i].apply {
+                    this.left = left
+                    this.top = top
+                    this.right = left + pxSize
+                    this.bottom = top + pxSize
+                }
             }
             invalidate()
         }
@@ -34,6 +40,7 @@ class LifeGameView @JvmOverloads constructor(
     // View
     private val paint = Paint()
     private val pixels = mutableListOf<RectF>()
+    private var livePxCount = 0
     private var pxSize = 0f
 
     var rows: Int = 0
@@ -69,11 +76,9 @@ class LifeGameView @JvmOverloads constructor(
         calculatePxSize(w, h)
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        canvas?.let { c ->
-            pixels.forEach { pixel ->
-                c.drawRect(pixel, paint)
-            }
+    override fun onDraw(canvas: Canvas) {
+        for (i in 0 until livePxCount) {
+            canvas.drawRect(pixels[i], paint)
         }
     }
 
