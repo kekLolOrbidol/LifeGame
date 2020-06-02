@@ -1,6 +1,8 @@
 package xyz.do9core.game
 
-inline class Point(val coordinate: Pair<Int, Int>) {
+import java.io.Serializable
+
+inline class Point(val coordinate: Pair<Int, Int>): Serializable {
 
     inline val x: Int get() = coordinate.first
     inline val y: Int get() = coordinate.second
