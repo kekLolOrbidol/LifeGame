@@ -1,17 +1,17 @@
 package xyz.do9core.game
 
-import xyz.do9core.game.life.LifePool
+import xyz.do9core.game.life.LifesPool
 
 private const val INFINITY_TIME = "Inf."
 
 data class Universe internal constructor(
     val width: Int,
     val height: Int,
-    private val initialState: Generation,
+    private val initialState: Generate,
     private val maxLife: Any = INFINITY_TIME
-) : Iterable<Generation> {
+) : Iterable<Generate> {
 
-    private inner class UniverseStateIterator : Iterator<Generation> {
+    private inner class UniverseStateIterator : Iterator<Generate> {
         var current = initialState
         var life: Int? = maxLife as? Int
 
@@ -21,23 +21,23 @@ data class Universe internal constructor(
             return l > 0
         }
 
-        override fun next(): Generation {
+        override fun next(): Generate {
             val temp = current
             current = current.evolve(width, height)
             return temp
         }
     }
 
-    override fun iterator(): Iterator<Generation> = UniverseStateIterator()
+    override fun iterator(): Iterator<Generate> = UniverseStateIterator()
 }
 
 fun createUniverse(
     width: Int,
     height: Int,
     time: Int? = null,
-    lives: LifePool.() -> Unit
+    lives: LifesPool.() -> Unit
 ): Universe {
-    val points = LifePool().apply(lives).points()
-    val initGen = Generation(points)
+    val points = LifesPool().apply(lives).points()
+    val initGen = Generate(points)
     return Universe(width, height, initGen, time ?: INFINITY_TIME)
 }

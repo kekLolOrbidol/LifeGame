@@ -11,15 +11,15 @@ data class Pixel(val position: Point) : Life() {
     }
 }
 
-fun LifePool.point(x: Int, y: Int) = newLife { Pixel(x, y) }
+fun LifesPool.point(x: Int, y: Int) = newLife { Pixel(x, y) }
 
-fun LifePool.points(vararg positions: Pair<Int, Int>) {
+fun LifesPool.points(vararg positions: Pair<Int, Int>) {
     positions.forEach {
         newLife { Pixel(Point(it)) }
     }
 }
 
-fun LifePool.randPoints(
+fun LifesPool.randPoints(
     topLeft: Pair<Int, Int>,
     bottomRight: Pair<Int, Int>,
     density: Double = 0.3

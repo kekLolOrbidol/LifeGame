@@ -3,9 +3,11 @@ package xyz.do9core.lifegame
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.parcel.Parcelize
 import xyz.do9core.game.Point
 import xyz.do9core.lifegame.databinding.ActivityScaleBinding
+import xyz.do9core.lifegame.features.ColorPref
 import xyz.do9core.lifegame.util.viewBinding
 
 const val KEY_SCALE_PARAMETERS = "SCALE_PARAMETERS"
@@ -23,6 +25,11 @@ class ScaleActivity : AppCompatActivity(R.layout.activity_scale) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val color = ColorPref(this).getBackgroundColor()
+        if(color != null && color != -1){
+            findViewById<ConstraintLayout>(R.id.scale_root).setBackgroundColor(color)
+            window.statusBarColor = color
+        }
         binding.root.setOnClickListener {
             supportFinishAfterTransition()
         }

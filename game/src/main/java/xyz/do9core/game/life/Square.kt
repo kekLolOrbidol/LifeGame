@@ -19,4 +19,4 @@ class Square(x: Int, y: Int) : TopLeftLife(x, y) {
     }
 }
 
-fun LifePool.square(x: Int, y: Int) = newLife { Square(x, y) }
+fun LifesPool.square(x: Int, y: Int) = newLife { Square(x, y) }

@@ -10,7 +10,7 @@ import androidx.core.content.contentValuesOf
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import xyz.do9core.game.Generation
+import xyz.do9core.game.Generate
 import xyz.do9core.game.Universe
 import xyz.do9core.game.createUniverse
 import xyz.do9core.game.life.randPoints
@@ -22,7 +22,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val width = _universe.map { it.width }.distinctUntilChanged()
     val height = _universe.map { it.height }.distinctUntilChanged()
 
-    private val _indexedGeneration = MutableLiveData<IndexedValue<Generation>>()
+    private val _indexedGeneration = MutableLiveData<IndexedValue<Generate>>()
     val generationCount = _indexedGeneration.map { it.index.inc().toString() }
     val liveCells = _indexedGeneration.map { it.value.lives }
 

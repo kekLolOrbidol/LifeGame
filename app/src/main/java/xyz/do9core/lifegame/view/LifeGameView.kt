@@ -8,6 +8,7 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.view.drawToBitmap
 import xyz.do9core.game.Point
 import xyz.do9core.lifegame.R
+import xyz.do9core.lifegame.features.ColorPref
 import kotlin.math.min
 
 class LifeGameView @JvmOverloads constructor(
@@ -35,6 +36,10 @@ class LifeGameView @JvmOverloads constructor(
             }
             invalidate()
         }
+    }
+
+    fun setCellsColor(color : Int){
+        paint.setColor(color)
     }
 
     // View
@@ -66,7 +71,10 @@ class LifeGameView @JvmOverloads constructor(
 
     init {
         context.withStyledAttributes(attrs, R.styleable.LifeGameView) {
-            liveColor = getColor(R.styleable.LifeGameView_liveColor, Color.GREEN)
+            val color = ColorPref(context).getCellColor()
+            liveColor = if (color != null && color != -1)
+                getColor(R.styleable.LifeGameView_liveColor, color)
+            else getColor(R.styleable.LifeGameView_liveColor, Color.GREEN)
             rows = getInt(R.styleable.LifeGameView_rows, 1)
             columns = getInt(R.styleable.LifeGameView_columns, 1)
         }
@@ -77,6 +85,7 @@ class LifeGameView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
+        //canvas.drawColor(Color.TRANSPARENT)
         for (i in 0 until livePxCount) {
             canvas.drawRect(pixels[i], paint)
         }

@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("kotlin-android")
 }
 
 androidExtensions {
@@ -14,7 +15,7 @@ android {
     buildToolsVersion("29.0.3")
 
     defaultConfig {
-        applicationId = "xyz.do9core.lifegame"
+        applicationId = "com.logicgames.life"
         minSdkVersion(23)
         targetSdkVersion(29)
         versionCode = 1
@@ -46,6 +47,8 @@ android {
 
 dependencies {
 
+    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.1")
     val fileTree = fileTree(file("libs")) {
         include("*.jar")
     }
@@ -62,6 +65,8 @@ dependencies {
     implementation(Dependencies.AndroidX.Lifecycle.ViewModelKtx)
     implementation(Dependencies.AndroidX.Lifecycle.LiveDataKtx)
     implementation(Dependencies.MaterialDesign)
+    implementation(Dependencies.ColorPicker)
+    implementation(Dependencies.FB)
 
     testImplementation(Dependencies.Test.JUnit)
     androidTestImplementation(Dependencies.Test.Android.JUnit)

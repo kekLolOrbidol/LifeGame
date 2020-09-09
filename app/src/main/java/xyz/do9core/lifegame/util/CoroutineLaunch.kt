@@ -6,7 +6,7 @@ import androidx.core.app.ActivityOptionsCompat
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-class CoroutineLauncher(private val registry: ActivityResultRegistry) {
+class CoroutineLaunch(private val registry: ActivityResultRegistry) {
 
     companion object {
         private const val TAG = "xyz.do9core.SuspendLauncher"

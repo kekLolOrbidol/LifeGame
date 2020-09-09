@@ -29,7 +29,7 @@ class CenterRing(x: Int, y: Int) : CenterLife(x, y) {
 }
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun LifePool.ringLeftTop(x: Int, y: Int) = newLife { TopLeftRing(x, y) }
+inline fun LifesPool.ringLeftTop(x: Int, y: Int) = newLife { TopLeftRing(x, y) }
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun LifePool.ringCenter(x: Int, y: Int) = newLife { CenterRing(x, y) }
+inline fun LifesPool.ringCenter(x: Int, y: Int) = newLife { CenterRing(x, y) }

@@ -1,8 +1,8 @@
 package xyz.do9core.game
 
-data class Generation(val lives: Set<Point>) {
+data class Generate(val lives: Set<Point>) {
 
-    internal fun evolve(width: Int, height: Int): Generation {
+    internal fun evolve(width: Int, height: Int): Generate {
         val next = mutableSetOf<Point>()
         for (x in 0 until width) {
             for (y in 0 until height) {
@@ -15,6 +15,6 @@ data class Generation(val lives: Set<Point>) {
                 }
             }
         }
-        return Generation(next)
+        return Generate(next)
     }
 }

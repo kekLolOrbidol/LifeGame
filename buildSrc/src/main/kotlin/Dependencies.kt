@@ -2,6 +2,8 @@
 object Dependencies {
 
     const val MaterialDesign = "com.google.android.material:material:1.2.0-beta01"
+    const val ColorPicker = "com.jaredrummler:colorpicker:1.1.0"
+    const val FB = "com.facebook.android:facebook-android-sdk:[4,5)"
 
     object Kotlin {
         const val StandardLibrary = "org.jetbrains.kotlin:kotlin-stdlib:${ProjectConfig.Kotlin.Version}"

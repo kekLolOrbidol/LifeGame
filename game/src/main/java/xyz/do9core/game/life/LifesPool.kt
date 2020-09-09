@@ -2,7 +2,7 @@ package xyz.do9core.game.life
 
 import xyz.do9core.game.Point
 
-class LifePool internal constructor() {
+class LifesPool internal constructor() {
 
     private val lives = mutableListOf<Life>()
 
